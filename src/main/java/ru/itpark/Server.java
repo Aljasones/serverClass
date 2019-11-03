@@ -6,6 +6,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
@@ -35,24 +36,29 @@ public class Server {
                     }
 
                     if (path.equals("/index.html")) {
-                        final byte[] bytes = Files.readAllBytes(Paths.get("index.html"));
+                        final Path index = Paths.get("index.html");
+                        final byte[] bytes = Files.readAllBytes(index);
+
                         os.write(("HTTP/1.1 200 OK\r\n" +
                                 "Content-Type: text/html; charset=UTF-8\r\n" +
-                                "Content-Length: " + bytes.length + "\r\n" +
+                                "Content-Length: " + Files.size(index) + "\r\n" +
                                 "Connection: close\r\n" +
                                 "\r\n" +
                                 new String (bytes)).getBytes());
+                        Files.copy(index, os);
                         continue;
 
                     }
-                    final byte[] bytes = Files.readAllBytes(Paths.get("notfound.html"));
+                    final Path notfound = Paths.get("notfound.html");
+                    final byte[] bytes = Files.readAllBytes(notfound);
                     os.write(("HTTP/1.1 404 Not Found\r\n" +
                             "Content-Type: text/html; charset=UTF-8\r\n" +
-                            "Content-Length: " + bytes.length + "\r\n" +
+                            "Content-Length: " + Files.size(notfound) + "\r\n" +
                             "Connection: close\r\n" +
                             "\r\n" +
                             new String (bytes)).getBytes());
-                    continue;
+                    Files.copy(notfound, os);
+
 
 
 
