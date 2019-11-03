@@ -1,0 +1,12 @@
+GET http://localhost:9876
+
+###
+
+POST http://localhost:9876
+Accept: application/json
+
+{
+ "id": 1
+}
+
+###

@@ -35,7 +35,7 @@ public class Server {
                         throw new IllegalReguestExceptionMethodException(method);
                     }
 
-                    if (path.equals("/index.html")) {
+                    if (path.equals("/") || path.equals("/index.html")) {
                         final Path index = Paths.get("index.html");
                         final byte[] bytes = Files.readAllBytes(index);
 
@@ -50,13 +50,12 @@ public class Server {
 
                     }
                     final Path notfound = Paths.get("notfound.html");
-                    final byte[] bytes = Files.readAllBytes(notfound);
+
                     os.write(("HTTP/1.1 404 Not Found\r\n" +
                             "Content-Type: text/html; charset=UTF-8\r\n" +
                             "Content-Length: " + Files.size(notfound) + "\r\n" +
                             "Connection: close\r\n" +
-                            "\r\n" +
-                            new String (bytes)).getBytes());
+                            "\r\n").getBytes());
                     Files.copy(notfound, os);
 
 
